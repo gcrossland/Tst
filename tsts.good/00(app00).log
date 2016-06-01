@@ -1,0 +1,51 @@
+rc 0
+out
+--------
+TEST 00 first test - passed
+TEST 01 second test - passed
+TEST 02 parameterised test(02 [] a.txt) - passed
+TEST 02 parameterised test(02 [] z.txt) - failed
+  expected
+    u"content is 'bAr\\n'"
+  but got
+    u"content is 'bar\\n'"
+  at log line 2
+
+  File "I:\--Geoff--\Software\libs\Tst\tsts\app00\tsts\02 parameterised test.tst.py", line 12, in T
+    checkContent(data)
+  File "I:\--Geoff--\Software\libs\Tst\tsts\app00\tsts\02 parameterised test.tst.py", line 8, in checkContent
+    t("content is {!r}", file(name).readline())
+
+TEST 03 other parameterised test(030) - error
+Traceback (most recent call last):
+  File "I:\--Geoff--\Software\libs\Tst\libraries\tst.py", line 57, in testing
+    yield
+  File "../../runtsts.py", line 58, in main
+    testFn(testDataPathName)
+  File "I:\--Geoff--\Software\libs\Tst\tsts\app00\tsts\03 other parameterised test.tst.py", line 5, in T
+    i = 3 / 0
+ZeroDivisionError: integer division or modulo by zero
+
+TEST 04 final test - passed
+
+--------
+err
+--------
+
+--------
+diffs
+--------
+
+
+
+--- 02 parameterised test(02 [] z.txt).log
++++ 02 parameterised test(02 [] z.txt).log
+@@ -1,3 +1,3 @@
+ test data is z.txt
+-content is 'bAr\n'
++content is 'bar\n'
+ done!
+
+
+
+--------
