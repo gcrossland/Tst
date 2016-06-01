@@ -55,6 +55,7 @@ else:
         print "TEST " + name,
         try:
           yield
+          t("")
 
           if inPathName:
             if _failure:
