@@ -11,18 +11,18 @@ TEST 02 parameterised test(02 [] z.txt) - failed
     u"content is 'bar\\n'"
   at log line 2
 
-  File "I:\--Geoff--\Software\libs\Tst\tsts\app00\tsts\02 parameterised test.tst.py", line 12, in T
+  File "02 parameterised test.tst.py", line 12, in T
     checkContent(data)
-  File "I:\--Geoff--\Software\libs\Tst\tsts\app00\tsts\02 parameterised test.tst.py", line 8, in checkContent
+  File "02 parameterised test.tst.py", line 8, in checkContent
     t("content is {!r}", file(name).readline())
 
 TEST 03 other parameterised test(030) - error
 Traceback (most recent call last):
-  File "I:\--Geoff--\Software\libs\Tst\libraries\tst.py", line 57, in testing
+  File "tst.py", line 57, in testing
     yield
-  File "../../runtsts.py", line 58, in main
+  File "runtsts.py", line 58, in main
     testFn(testDataPathName)
-  File "I:\--Geoff--\Software\libs\Tst\tsts\app00\tsts\03 other parameterised test.tst.py", line 5, in T
+  File "03 other parameterised test.tst.py", line 5, in T
     i = 3 / 0
 ZeroDivisionError: integer division or modulo by zero
 
