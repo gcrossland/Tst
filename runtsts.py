@@ -5,7 +5,8 @@ import os.path
 import glob
 import inspect
 tstEnabled = True
-from tst import t, testing
+import tst
+from tst import t
 
 
 
@@ -21,9 +22,13 @@ def main (args):
   cmp = len(args) != 0 and args[0] == "cmp"
 
   rootPathName = os.getcwdu()
-  testsDirPrefixLen = len(os.path.join(rootPathName, _TESTS_DIR_LEAF_NAME, ""))
+  testsDirPathName = os.path.join(rootPathName, _TESTS_DIR_LEAF_NAME)
+  if not os.path.isdir(testsDirPathName):
+    sys.exit("The tests directory is missing")
+
+  testsDirPrefixLen = len(os.path.join(testsDirPathName, ""))
   g = globals()
-  for testPathName in sorted(glob.iglob(os.path.join(rootPathName, _TESTS_DIR_LEAF_NAME, "*" + _TEST_FILE_SUFFIX))):
+  for testPathName in sorted(glob.iglob(os.path.join(testsDirPathName, "*" + _TEST_FILE_SUFFIX))):
     testName = testPathName[testsDirPrefixLen:-len(_TEST_FILE_SUFFIX)]
 
     execfile(testPathName, g, g)
@@ -31,10 +36,10 @@ def main (args):
     testDataExpr = g.pop(_TEST_DATA_EXPR_NAME, None)
 
     if testDataExpr is None:
-      testDataPathNames = (os.path.join(rootPathName, _TESTS_DIR_LEAF_NAME, testName),)
+      testDataPathNames = (os.path.join(testsDirPathName, testName),)
       qualifySubtestNameWithTestDataName = False
     else:
-      testDataPathNames = sorted(glob.iglob(os.path.join(rootPathName, _TESTS_DIR_LEAF_NAME, testDataExpr)))
+      testDataPathNames = sorted(glob.iglob(os.path.join(testsDirPathName, testDataExpr)))
       qualifySubtestNameWithTestDataName = True
 
     try:
@@ -53,11 +58,17 @@ def main (args):
       if cmp:
         i = os.path.join(rootPathName, _GOOD_DIR_LEAF_NAME, subtestName + _LOG_FILE_SUFFIX)
       o = os.path.join(rootPathName, _OUT_DIR_LEAF_NAME, subtestName + _LOG_FILE_SUFFIX)
-      with testing(subtestName, i, o):
+      with tst.testing(subtestName, i, o):
         if oneArg:
           testFn(testDataPathName)
         else:
           testFn()
+
+  print ""
+  totalCount, failureCount, errorCount = tst.report()
+  print "Tests: " + str(totalCount)
+  print "Failures: " + str(failureCount)
+  print "Errors: " + str(errorCount)
 
 
 

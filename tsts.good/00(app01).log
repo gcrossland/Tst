@@ -1,0 +1,21 @@
+rc 0
+out
+--------
+* a - passed
+* b - passed
+
+Tests: 2
+Failures: 0
+Errors: 0
+
+--------
+err
+--------
+
+--------
+diffs
+--------
+
+
+--------
+

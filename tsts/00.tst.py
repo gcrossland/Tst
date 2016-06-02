@@ -27,6 +27,11 @@ def stripSpecifics (d):
       return d
     d = d[:match.start(1)] + d[match.end(1):]
 
+def listDir (pathName):
+  if not os.path.isdir(pathName):
+    return ()
+  return os.listdir(pathName)
+
 D = "app*"
 
 def T (data):
@@ -42,10 +47,13 @@ def T (data):
   t("diffs\n--------")
   goodDirPathName = os.path.join(data, "tsts.good")
   outDirPathName = os.path.join(data, "tsts.out")
-  for leafName in sorted(set(itertools.chain(os.listdir(goodDirPathName), os.listdir(outDirPathName)))):
+  for leafName in sorted(set(itertools.chain(listDir(goodDirPathName), listDir(outDirPathName)))):
     g = readFile(os.path.join(goodDirPathName, leafName))
     o = readFile(os.path.join(outDirPathName, leafName))
     t("{}", "".join(difflib.unified_diff(g, o, leafName, leafName)))
   t("--------")
 
-  shutil.rmtree(outDirPathName)
+  try:
+    shutil.rmtree(outDirPathName)
+  except:
+    pass

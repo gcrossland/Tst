@@ -1,10 +1,10 @@
 rc 0
 out
 --------
-TEST 00 first test - passed
-TEST 01 second test - passed
-TEST 02 parameterised test(02 [] a.txt) - passed
-TEST 02 parameterised test(02 [] z.txt) - failed
+* 00 first test - passed
+* 01 second test - passed
+* 02 parameterised test(02 [] a.txt) - passed
+* 02 parameterised test(02 [] z.txt) - failed
   expected
     u"content is 'bAr\\n'"
   but got
@@ -16,17 +16,21 @@ TEST 02 parameterised test(02 [] z.txt) - failed
   File "02 parameterised test.tst.py", line 8, in checkContent
     t("content is {!r}", file(name).readline())
 
-TEST 03 other parameterised test(030) - error
+* 03 other parameterised test(030) - error
 Traceback (most recent call last):
-  File "tst.py", line 57, in testing
+  File "tst.py", line 66, in testing
     yield
-  File "runtsts.py", line 58, in main
+  File "runtsts.py", line 63, in main
     testFn(testDataPathName)
   File "03 other parameterised test.tst.py", line 5, in T
     i = 3 / 0
 ZeroDivisionError: integer division or modulo by zero
 
-TEST 04 final test - passed
+* 04 final test - passed
+
+Tests: 6
+Failures: 1
+Errors: 1
 
 --------
 err

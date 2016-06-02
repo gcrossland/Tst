@@ -21,6 +21,13 @@ else:
   import os
   import traceback
 
+  def _ensureDir (d):
+    if not os.path.isdir(d):
+      os.makedirs(d)
+
+  _totalCount = 0
+  _failureCount = 0
+  _errorCount = 0
   _inLogFile = None
   _inLogFileLine = None
   _failure = None
@@ -29,6 +36,9 @@ else:
   @contextlib.contextmanager
   def testing (name, inPathName = None, outPathName = None):
     assert inPathName or outPathName
+    global _totalCount
+    global _failureCount
+    global _errorCount
     global _inLogFile
     global _inLogFileLine
     global _failure
@@ -47,12 +57,11 @@ else:
             _inLogFile = StringIO.StringIO(u"")
           _inLogFileLine = 0
         if outPathName:
-          d = os.path.dirname(outPathName)
-          if not os.path.isdir(d):
-            os.makedirs(d)
+          _ensureDir(os.path.dirname(outPathName))
           _outLogFile = codecs.open(outPathName, 'w', 'utf-8')
 
-        print "TEST " + name,
+        print "* " + name,
+        _totalCount += 1
         try:
           yield
           t("")
@@ -60,6 +69,7 @@ else:
           if inPathName:
             if _failure:
               print "- failed" + _failure
+              _failureCount += 1
             else:
               print "- passed"
           else:
@@ -68,6 +78,7 @@ else:
         except:
           print "- error"
           print traceback.format_exc()
+          _errorCount += 1
       finally:
         if _outLogFile:
           _outLogFile.close()
@@ -78,6 +89,9 @@ else:
         _inLogFile.close()
         _inLogFile = None
         _inLogFileLine = None
+
+  def report ():
+    return (_totalCount, _failureCount, _errorCount)
 
   def t (s, *args, **kwargs):
     global _failure
