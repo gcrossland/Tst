@@ -11,16 +11,16 @@ out
     u"content is 'bar\\n'"
   at log line 2
 
-  File "02 parameterised test.tst.py", line 12, in T
+  File "02 parameterised test.tst.py", line 10, in T
     checkContent(data)
-  File "02 parameterised test.tst.py", line 8, in checkContent
+  File "02 parameterised test.tst.py", line 6, in checkContent
     t("content is {!r}", file(name).readline())
 
 * 03 other parameterised test(030) - error
 Traceback (most recent call last):
-  File "tst.py", line 66, in testing
+  File "tst.py", line 73, in testing
     yield
-  File "runtsts.py", line 63, in main
+  File "runtsts.py", line 61, in main
     testFn(testDataPathName)
   File "03 other parameterised test.tst.py", line 5, in T
     i = 3 / 0

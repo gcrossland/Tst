@@ -6,9 +6,7 @@ import glob
 import inspect
 tstEnabled = True
 import tst
-from tst import t
-
-
+from tst import t, tv
 
 _TESTS_DIR_LEAF_NAME = u"tsts"
 _TEST_FILE_SUFFIX = u".tst.py"
@@ -69,8 +67,6 @@ def main (args):
   print "Tests: " + str(totalCount)
   print "Failures: " + str(failureCount)
   print "Errors: " + str(errorCount)
-
-
 
 if __name__ == "__main__":
   envEncoding = sys.stdin.encoding or sys.getdefaultencoding()

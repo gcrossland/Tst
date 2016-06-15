@@ -8,8 +8,6 @@ import re
 import difflib
 import shutil
 
-
-
 def readFile (pathName):
   if os.path.isfile(pathName):
     with codecs.open(pathName, 'r', 'utf-8') as f:

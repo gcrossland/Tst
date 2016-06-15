@@ -1,7 +1,5 @@
 import os.path
 
-
-
 D = "02/?.txt"
 
 def checkContent (name):

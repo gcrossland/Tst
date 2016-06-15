@@ -5,15 +5,22 @@
 # ------------------------------------------------------------------------------
 import sys
 
+##
+# When in testing mode, logs the format string s formatted according to the
+# remaining arguments (or, otherwise, does nothing).
+def t (s, *args, **kwargs):
+  pass
 
+##
+# When in testing mode, logs the current value of a local variable (or,
+# otherwise, does nothing).
+def tv (varName):
+  pass
 
 frame = sys._getframe()
 while frame.f_back:
   frame = frame.f_back
-if not frame.f_globals.get('tstEnabled', False):
-  def t (s, *args, **kwargs):
-    pass
-else:
+if frame.f_globals.get('tstEnabled', False):
   import contextlib
   import codecs
   import StringIO
@@ -93,11 +100,9 @@ else:
   def report ():
     return (_totalCount, _failureCount, _errorCount)
 
-  def t (s, *args, **kwargs):
+  def _log (msg):
     global _failure
     global _inLogFileLine
-
-    msg = s.format(*args, **kwargs)
 
     if _outLogFile:
       _outLogFile.write(msg)
@@ -110,5 +115,13 @@ else:
         if inLine.endswith('\n'):
           inLine = inLine[:-1]
         if msgLine != inLine:
-          _failure = "\n  expected\n    {!r}\n  but got\n    {!r}\n  at log line {}\n\n".format(unicode(inLine), unicode(msgLine), _inLogFileLine) + "".join(traceback.format_list(traceback.extract_stack()[2:-1]))
+          _failure = "\n  expected\n    {!r}\n  but got\n    {!r}\n  at log line {}\n\n".format(unicode(inLine), unicode(msgLine), _inLogFileLine) + "".join(traceback.format_list(traceback.extract_stack()[2:-2]))
           break
+
+  def t (s, *args, **kwargs):
+    _log(s.format(*args, **kwargs))
+
+  def tv (varName):
+    frame = sys._getframe(1)
+    varVal = frame.f_locals[varName]
+    _log("{} = {}".format(varName, varVal))
