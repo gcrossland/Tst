@@ -42,7 +42,6 @@ if frame.f_globals.get('tstEnabled', False):
 
   @contextlib.contextmanager
   def testing (name, inPathName = None, outPathName = None):
-    assert inPathName or outPathName
     global _totalCount
     global _failureCount
     global _errorCount

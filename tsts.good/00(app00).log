@@ -18,9 +18,9 @@ out
 
 * 03 other parameterised test(030) - error
 Traceback (most recent call last):
-  File "tst.py", line 73, in testing
+  File "tst.py", line 72, in testing
     yield
-  File "runtsts.py", line 61, in main
+  File "runtsts.py", line 79, in main
     testFn(testDataPathName)
   File "03 other parameterised test.tst.py", line 5, in T
     i = 3 / 0

@@ -2,6 +2,7 @@
 import sys
 import os
 import os.path
+import cProfile
 import glob
 import inspect
 tstEnabled = True
@@ -17,12 +18,26 @@ _GOOD_DIR_LEAF_NAME = u"tsts.good"
 _OUT_DIR_LEAF_NAME = u"tsts.out"
 
 def main (args):
-  cmp = len(args) != 0 and args[0] == "cmp"
+  modeCmp = False
+  modeProf = False
+  if len(args) != 0:
+    arg = args[0]
+    if arg == "cmp":
+      modeCmp = True
+    elif arg == "prof":
+      modeProf = True
 
   rootPathName = os.getcwdu()
   testsDirPathName = os.path.join(rootPathName, _TESTS_DIR_LEAF_NAME)
   if not os.path.isdir(testsDirPathName):
     sys.exit("The tests directory is missing")
+
+  if modeProf:
+    profile = cProfile.Profile()
+    startProf = profile.enable
+    stopProf = profile.disable
+  else:
+    startProf = stopProf = lambda: None
 
   testsDirPrefixLen = len(os.path.join(testsDirPathName, ""))
   g = globals()
@@ -53,20 +68,27 @@ def main (args):
         subtestName += "(" + testDataName + ")"
 
       i = None
-      if cmp:
+      o = None
+      if modeCmp:
         i = os.path.join(rootPathName, _GOOD_DIR_LEAF_NAME, subtestName + _LOG_FILE_SUFFIX)
-      o = os.path.join(rootPathName, _OUT_DIR_LEAF_NAME, subtestName + _LOG_FILE_SUFFIX)
+      if not modeProf:
+        o = os.path.join(rootPathName, _OUT_DIR_LEAF_NAME, subtestName + _LOG_FILE_SUFFIX)
       with tst.testing(subtestName, i, o):
+        startProf()
         if oneArg:
           testFn(testDataPathName)
         else:
           testFn()
+        stopProf()
 
   print ""
   totalCount, failureCount, errorCount = tst.report()
   print "Tests: " + str(totalCount)
   print "Failures: " + str(failureCount)
   print "Errors: " + str(errorCount)
+  if modeProf:
+    profile.print_stats('time')
+    profile.print_stats('cumtime')
 
 if __name__ == "__main__":
   envEncoding = sys.stdin.encoding or sys.getdefaultencoding()
