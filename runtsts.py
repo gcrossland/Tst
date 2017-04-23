@@ -18,14 +18,23 @@ _GOOD_DIR_LEAF_NAME = u"tsts.good"
 _OUT_DIR_LEAF_NAME = u"tsts.out"
 
 def main (args):
+  syntax = "Syntax: runtsts [run|cmp|prof]"
   modeCmp = False
   modeProf = False
-  if len(args) != 0:
+  if len(args) == 0:
+    modeCmp = True
+  elif len(args) == 1:
     arg = args[0]
-    if arg == "cmp":
+    if arg == "run":
+      pass
+    elif arg == "cmp":
       modeCmp = True
     elif arg == "prof":
       modeProf = True
+    else:
+      sys.exit(syntax)
+  else:
+    sys.exit(syntax)
 
   rootPathName = os.getcwdu()
   testsDirPathName = os.path.join(rootPathName, _TESTS_DIR_LEAF_NAME)

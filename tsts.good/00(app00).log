@@ -20,7 +20,7 @@ out
 Traceback (most recent call last):
   File "tst.py", line 72, in testing
     yield
-  File "runtsts.py", line 79, in main
+  File "runtsts.py", line 88, in main
     testFn(testDataPathName)
   File "03 other parameterised test.tst.py", line 5, in T
     i = 3 / 0
